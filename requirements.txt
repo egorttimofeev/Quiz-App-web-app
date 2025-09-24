@@ -1,0 +1,18 @@
+# FastAPI и веб-сервер (совместимые с Python 3.13)
+fastapi>=0.100.0
+uvicorn[standard]>=0.23.0
+
+# База данных 
+psycopg2-binary
+sqlalchemy>=2.0.0
+
+# Основные зависимости (без жестких версий для совместимости)
+python-dotenv
+pydantic>=2.0.0
+requests
+python-multipart
+jinja2
+
+# Альтернативы для проблемных пакетов
+aiofiles
+asyncpg

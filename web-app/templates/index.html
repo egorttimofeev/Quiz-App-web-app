@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Переключатель темы -->
+        <div class="theme-switcher">
+            <button id="themeToggle" class="theme-btn">
+                <span class="theme-icon">🌙</span>
+                <span class="theme-text">Темная тема</span>
+            </button>
+        </div>
+
+        <!-- Приветствие -->
+        <div id="welcomeScreen" class="screen active">
+            <div class="welcome-content">
+                <h1 class="title">Добро пожаловать в Quiz App!</h1>
+                <div class="welcome-info">
+                    <p>Тест состоит из 10 вопросов</p>
+                    <p>Каждый вопрос имеет 4 варианта ответа</p>
+                    <p>Для прохождения нужно ответить правильно на 7+ вопросов</p>
+                    <p>Время ограничено</p>
+                </div>
+                <button id="startTestBtn" class="btn btn-primary">Начать тест</button>
+                <button id="leaderboardBtn" class="btn btn-secondary">Таблица результатов</button>
+            </div>
+        </div>
+
+        <!-- Экран теста -->
+        <div id="testScreen" class="screen">
+            <!-- Таймер и счетчик -->
+            <div class="test-header">
+                <div class="timer">
+                    <span id="timer">00:00</span>
+                </div>
+                <div class="question-counter">
+                    <span id="questionCounter">1/10</span>
+                </div>
+            </div>
+
+            <!-- Вопрос -->
+            <div class="question-container">
+                <h2 id="questionText" class="question-text"></h2>
+                
+                <div class="options-container">
+                    <button class="option-btn" data-option="1">
+                        <span class="option-letter">A</span>
+                        <span class="option-text" id="option1"></span>
+                    </button>
+                    <button class="option-btn" data-option="2">
+                        <span class="option-letter">B</span>
+                        <span class="option-text" id="option2"></span>
+                    </button>
+                    <button class="option-btn" data-option="3">
+                        <span class="option-letter">C</span>
+                        <span class="option-text" id="option3"></span>
+                    </button>
+                    <button class="option-btn" data-option="4">
+                        <span class="option-letter">D</span>
+                        <span class="option-text" id="option4"></span>
+                    </button>
+                </div>
+
+                <div class="test-navigation">
+                    <button id="backBtn" class="btn btn-secondary">Назад</button>
+                    <button id="nextBtn" class="btn btn-primary" disabled>Далее</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Экран результатов -->
+        <div id="resultsScreen" class="screen">
+            <div class="results-content">
+                <h2 id="resultTitle" class="result-title"></h2>
+                
+                <div class="result-stats">
+                    <div class="stat">
+                        <span class="stat-label">Правильных ответов:</span>
+                        <span id="correctAnswers" class="stat-value"></span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Время:</span>
+                        <span id="totalTime" class="stat-value"></span>
+                    </div>
+                </div>
+
+                <div id="wrongAnswers" class="wrong-answers"></div>
+
+                <div class="result-actions">
+                    <button id="retakeBtn" class="btn btn-primary">Пройти еще раз</button>
+                    <button id="homeBtn" class="btn btn-secondary">На главную</button>
+                    <button id="suggestionsBtn" class="btn btn-tertiary">
+                        💡 Идеи и предложения
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Экран таблицы лидеров -->
+        <div id="leaderboardScreen" class="screen">
+            <div class="leaderboard-content">
+                <h2>Таблица результатов</h2>
+                
+                <div id="leaderboardTable" class="leaderboard-table"></div>
+                
+                <button id="backToHomeBtn" class="btn btn-secondary">На главную</button>
+            </div>
+        </div>
+
+        <!-- Экран оплаты -->
+        <div id="paymentScreen" class="screen">
+            <div class="payment-content">
+                <h2>Пересдача теста</h2>
+                <p>Для повторного прохождения теста необходимо оплатить 200 Telegram Stars</p>
+                
+                <div class="payment-actions">
+                    <button id="payBtn" class="btn btn-primary">Оплатить 200 ⭐</button>
+                    <button id="cancelPayBtn" class="btn btn-secondary">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Загрузка -->
+    <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Загрузка...</p>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

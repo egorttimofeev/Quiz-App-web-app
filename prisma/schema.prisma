@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-py"
+  interface = "asyncio"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  telegramId   String   @unique
+  username     String?
+  firstName    String?
+  lastName     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  // Связи
+  testResults  TestResult[]
+  payments     Payment[]
+  
+  @@map("users")
+}
+
+model Question {
+  id          Int      @id @default(autoincrement())
+  text        String
+  option1     String
+  option2     String
+  option3     String
+  option4     String
+  correctAnswer Int    // 1, 2, 3 или 4
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Связи
+  testAnswers TestAnswer[]
+  
+  @@map("questions")
+}
+
+model Test {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  startedAt DateTime @default(now())
+  finishedAt DateTime?
+  isPassed  Boolean?
+  totalTime Int?     // время в секундах
+  score     Int?     // количество правильных ответов
+  
+  // Связи
+  user      User       @relation(fields: [userId], references: [id])
+  answers   TestAnswer[]
+  result    TestResult?
+  
+  @@map("tests")
+}
+
+model TestAnswer {
+  id         Int @id @default(autoincrement())
+  testId     Int
+  questionId Int
+  userAnswer Int // 1, 2, 3 или 4
+  isCorrect  Boolean
+  
+  // Связи
+  test       Test     @relation(fields: [testId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id])
+  
+  @@unique([testId, questionId])
+  @@map("test_answers")
+}
+
+model TestResult {
+  id        Int      @id @default(autoincrement())
+  testId    Int      @unique
+  userId    Int
+  score     Int      // количество правильных ответов из 10
+  totalTime Int      // общее время в секундах
+  isPassed  Boolean  // >= 7 правильных ответов
+  createdAt DateTime @default(now())
+  
+  // Связи
+  test      Test @relation(fields: [testId], references: [id])
+  user      User @relation(fields: [userId], references: [id])
+  
+  @@map("test_results")
+}
+
+model Payment {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  telegramPaymentId String @unique
+  amount          Int      // в Telegram Stars
+  status          String   // pending, completed, failed
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Связи
+  user            User @relation(fields: [userId], references: [id])
+  
+  @@map("payments")
+}
